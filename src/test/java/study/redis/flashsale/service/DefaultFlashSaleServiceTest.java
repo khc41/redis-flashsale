@@ -38,7 +38,7 @@ class DefaultFlashSaleServiceTest {
     }
 
     @Test
-    @DisplayName("부하 테스트 (동시성 문제 발생)")
+    @DisplayName("동시성 테스트 (동시성 문제 발생)")
     void testPurchaseMulti() throws InterruptedException {
 
         ExecutorService executor = Executors.newFixedThreadPool(NUM_OF_THREADS);
