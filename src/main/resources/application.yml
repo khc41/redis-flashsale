@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: flashsale
+  data:
+    redis:
+      host: localhost
+      port: 6379
