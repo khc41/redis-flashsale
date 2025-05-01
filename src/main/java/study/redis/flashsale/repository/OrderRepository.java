@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import study.redis.flashsale.domain.Order;
 
 @Repository
-public interface FlashSaleJpaRepository extends JpaRepository<Order, Long> {
+public interface OrderRepository extends JpaRepository<Order, Long> {
 }

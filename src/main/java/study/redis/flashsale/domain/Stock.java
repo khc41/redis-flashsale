@@ -1,0 +1,32 @@
+package study.redis.flashsale.domain;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Entity
+@Getter
+@Table(name = "stocks")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Stock {
+    @Id
+    private Long productId;
+    private Long quantity;
+
+    public static Stock create(Long id, Long quantity) {
+        Stock stock = new Stock();
+        stock.productId = id;
+        stock.quantity = quantity;
+        return stock;
+    }
+
+    public void decrease() {
+        if (quantity <= 0) {
+            throw new IllegalStateException();
+        }
+        this.quantity--;
+    }
+}
