@@ -9,6 +9,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import study.redis.flashsale.FlashSaleTestHelper;
 
+import static study.redis.flashsale.FlashSaleTestHelper.PRODUCT_ID;
+
 @SpringBootTest
 @Transactional
 class IncrFlashSaleServiceTest {
@@ -18,8 +20,8 @@ class IncrFlashSaleServiceTest {
     private FlashSaleService incrFlashSaleService;
 
     @BeforeEach
-    void clear() {
-        incrFlashSaleService.clear();
+    void init() {
+        incrFlashSaleService.init(PRODUCT_ID);
     }
 
     @Test
