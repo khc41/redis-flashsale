@@ -7,7 +7,5 @@ public interface FlashSaleService {
 
     Long getOrderCount(Long productId);
 
-    default void clear() {
-
-    }
+    void init(Long productId);
 }

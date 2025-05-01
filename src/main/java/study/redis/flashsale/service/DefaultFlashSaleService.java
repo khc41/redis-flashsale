@@ -10,15 +10,15 @@ import study.redis.flashsale.repository.StockRepository;
 import study.redis.flashsale.util.Snowflake;
 
 @Service("defaultFlashSaleService")
+@Transactional
 @RequiredArgsConstructor
 public class DefaultFlashSaleService implements FlashSaleService {
 
     private final OrderRepository orderRepository;
     private final StockRepository stockRepository;
-    private final Snowflake snowflake = new Snowflake();
+    private final Snowflake snowflake;
 
     @Override
-    @Transactional
     public void tryPurchase(Long productId, String userId) {
         Stock stock = stockRepository.findById(productId)
                 .orElseThrow();
@@ -41,6 +41,13 @@ public class DefaultFlashSaleService implements FlashSaleService {
     @Override
     public Long getOrderCount(Long productId) {
         return orderRepository.findCountByProductId(productId);
+    }
+
+    @Override
+    public void init(Long productId) {
+        orderRepository.deleteByProductId(productId);
+        Stock stock = stockRepository.findById(productId).orElseThrow();
+        stock.setQuantity(100L);
     }
 
 }

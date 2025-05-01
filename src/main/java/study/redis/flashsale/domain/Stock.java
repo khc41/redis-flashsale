@@ -6,6 +6,7 @@ import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
@@ -14,6 +15,7 @@ import lombok.NoArgsConstructor;
 public class Stock {
     @Id
     private Long productId;
+    @Setter
     private Long quantity;
 
     public static Stock create(Long id, Long quantity) {

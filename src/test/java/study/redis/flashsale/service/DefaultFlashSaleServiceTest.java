@@ -1,20 +1,26 @@
 package study.redis.flashsale.service;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 import study.redis.flashsale.FlashSaleTestHelper;
 
-@Transactional
+import static study.redis.flashsale.FlashSaleTestHelper.PRODUCT_ID;
+
 @SpringBootTest
 class DefaultFlashSaleServiceTest {
 
     @Autowired
     @Qualifier("defaultFlashSaleService")
     private FlashSaleService defaultFlashSaleService;
+
+    @BeforeEach
+    void init() {
+        defaultFlashSaleService.init(PRODUCT_ID);
+    }
 
     @Test
     @DisplayName("기본 동작 테스트")
