@@ -36,7 +36,7 @@ public class DataInitializer {
             });
         }
         latch.await();
-
+        executorService.shutdown();
     }
 
     private void insert() {
