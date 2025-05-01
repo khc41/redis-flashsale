@@ -2,26 +2,45 @@ package study.redis.flashsale.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import study.redis.flashsale.domain.Order;
-import study.redis.flashsale.repository.FlashSaleJpaRepository;
+import study.redis.flashsale.domain.Stock;
+import study.redis.flashsale.repository.OrderRepository;
+import study.redis.flashsale.repository.StockRepository;
+import study.redis.flashsale.util.Snowflake;
 
 @Service("defaultFlashSaleService")
 @RequiredArgsConstructor
 public class DefaultFlashSaleService implements FlashSaleService {
 
-    private final FlashSaleJpaRepository flashSaleJpaRepository;
+    private final OrderRepository orderRepository;
+    private final StockRepository stockRepository;
+    private final Snowflake snowflake = new Snowflake();
 
     @Override
-    public void tryPurchase(String userId, int maxCount) {
-        if (getCount() >= maxCount) {
-            return;
+    @Transactional
+    public void tryPurchase(Long productId, String userId) {
+        Stock stock = stockRepository.findById(productId)
+                .orElseThrow();
+        if (stock.decrease()) {
+            orderRepository.save(
+                    Order.create(
+                            snowflake.nextId(),
+                            userId,
+                            productId
+                    )
+            );
         }
-        flashSaleJpaRepository.save(new Order(userId));
     }
 
     @Override
-    public int getCount() {
-        return (int) flashSaleJpaRepository.count();
+    public long getStockCount(Long productId) {
+        return stockRepository.findById(productId).orElseThrow().getQuantity();
+    }
+
+    @Override
+    public Long getOrderCount(Long productId) {
+        return orderRepository.findCountByProductId(productId);
     }
 
 }

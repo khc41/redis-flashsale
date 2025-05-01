@@ -1,9 +1,11 @@
 package study.redis.flashsale.service;
 
 public interface FlashSaleService {
-    void tryPurchase(String userId, int maxCount);
+    void tryPurchase(Long productId, String userId);
 
-    int getCount();
+    long getStockCount(Long productId);
+
+    Long getOrderCount(Long productId);
 
     default void clear() {
 

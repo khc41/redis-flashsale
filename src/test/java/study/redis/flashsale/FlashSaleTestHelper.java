@@ -12,18 +12,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class FlashSaleTestHelper {
 
-    public static final int MAX_COUNT = 100;
     public static final int NUM_OF_THREADS = 100;
     public static final int START_INDEX = 0;
     public static final int TOTAL_REQUEST = 10000;
+    public static final long PRODUCT_ID = 176192437032710244L;
+    public static final int STOCK_QUANTITY = 100;
 
     public static void testPurchase(FlashSaleService flashSaleService) {
-        IntStream.range(START_INDEX, TOTAL_REQUEST).forEach(i ->
-                flashSaleService.tryPurchase(
-                        String.valueOf(UUID.randomUUID()), MAX_COUNT)
-        );
+        flashSaleService.tryPurchase(PRODUCT_ID, String.valueOf(UUID.randomUUID()));
 
-        assertThat(flashSaleService.getCount()).isEqualTo(MAX_COUNT);
+        assertThat(flashSaleService.getStockCount(PRODUCT_ID)).isEqualTo(STOCK_QUANTITY - 1);
+        assertThat(flashSaleService.getOrderCount(PRODUCT_ID)).isEqualTo(1);
     }
 
     public static void testPurchaseMulti(FlashSaleService flashSaleService) throws InterruptedException {
@@ -34,7 +33,9 @@ public class FlashSaleTestHelper {
         IntStream.range(START_INDEX, TOTAL_REQUEST).forEach(i ->
                 executor.submit(() -> {
                     try {
-                        flashSaleService.tryPurchase(String.valueOf(UUID.randomUUID()), MAX_COUNT);
+                        flashSaleService.tryPurchase(
+                                PRODUCT_ID,
+                                String.valueOf(UUID.randomUUID()));
                     } finally {
                         countDownLatch.countDown();
                     }
@@ -43,6 +44,7 @@ public class FlashSaleTestHelper {
 
         countDownLatch.await();
 
-        assertThat(flashSaleService.getCount()).isEqualTo(MAX_COUNT);
+        assertThat(flashSaleService.getStockCount(PRODUCT_ID)).isEqualTo(0);
+        assertThat(flashSaleService.getOrderCount(PRODUCT_ID)).isEqualTo(STOCK_QUANTITY);
     }
 }
