@@ -22,15 +22,16 @@ public class DefaultFlashSaleService implements FlashSaleService {
     public void tryPurchase(Long productId, String userId) {
         Stock stock = stockRepository.findById(productId)
                 .orElseThrow();
-        if (stock.decrease()) {
-            orderRepository.save(
-                    Order.create(
-                            snowflake.nextId(),
-                            userId,
-                            productId
-                    )
-            );
+        if (!stock.decrease()) {
+            return;
         }
+        orderRepository.save(
+                Order.create(
+                        snowflake.nextId(),
+                        userId,
+                        productId
+                )
+        );
     }
 
     @Override
