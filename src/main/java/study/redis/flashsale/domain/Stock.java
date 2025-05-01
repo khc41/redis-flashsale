@@ -23,10 +23,11 @@ public class Stock {
         return stock;
     }
 
-    public void decrease() {
+    public boolean decrease() {
         if (quantity <= 0) {
-            throw new IllegalStateException();
+            return false;
         }
         this.quantity--;
+        return true;
     }
 }
