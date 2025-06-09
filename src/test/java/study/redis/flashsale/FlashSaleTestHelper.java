@@ -31,13 +31,10 @@ public class FlashSaleTestHelper {
 
         IntStream.range(0, TOTAL_REQUEST).forEach(i ->
                 executor.submit(() -> {
-                    try {
-                        flashSaleService.tryPurchase(
-                                PRODUCT_ID,
-                                String.valueOf(UUID.randomUUID()));
-                    } finally {
-                        countDownLatch.countDown();
-                    }
+                    flashSaleService.tryPurchase(
+                            PRODUCT_ID,
+                            String.valueOf(UUID.randomUUID()));
+                    countDownLatch.countDown();
                 })
         );
 
