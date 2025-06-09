@@ -6,13 +6,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 import study.redis.flashsale.FlashSaleTestHelper;
 
 import static study.redis.flashsale.FlashSaleTestHelper.PRODUCT_ID;
 
 @SpringBootTest
-@Transactional
 class IncrFlashSaleServiceTest {
 
     @Autowired
@@ -31,7 +29,7 @@ class IncrFlashSaleServiceTest {
     }
 
     @Test
-    @DisplayName("동시성 테스트 (동시성 문제 해결)")
+    @DisplayName("동시성 테스트 (동시성 문제 해결 - Redis INCR 사용)")
     void testPurchaseMulti() throws InterruptedException {
         FlashSaleTestHelper.testPurchaseMulti(incrFlashSaleService);
     }

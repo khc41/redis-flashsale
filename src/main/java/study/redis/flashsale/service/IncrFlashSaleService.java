@@ -9,8 +9,6 @@ import study.redis.flashsale.domain.Order;
 import study.redis.flashsale.repository.OrderRepository;
 import study.redis.flashsale.util.Snowflake;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 @Transactional
 @Service(value = "incrFlashSaleService")
 @RequiredArgsConstructor
@@ -24,7 +22,6 @@ public class IncrFlashSaleService implements FlashSaleService {
 
     private final StringRedisTemplate redisTemplate;
     private static final String PRODUCT_KEY = "flash_sale_product";
-    private final AtomicInteger t = new AtomicInteger(0);
 
     @Override
     public void tryPurchase(Long productId, String userId) {
